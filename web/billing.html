@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>DataCare HMS - Billing System</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="../css/style.css">
+
+</head>
+
+
+<body>
+
+<div id="application" class="application">
+
+
+    <aside class="sidebar">
+
+        <div class="sidebar-header">
+
+            <div class="logo">
+
+                <div class="logo-icon">
+                    <i class="fa-solid fa-hospital"></i>
+                </div>
+
+                <div>
+                    <strong>DataCare</strong>
+                    <span>Hospital Management</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <p class="nav-title">MAIN MENU</p>
+
+
+            <a href="../index.html"
+               class="nav-link"
+               data-page="dashboard">
+
+                <i class="fa-solid fa-house"></i>
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a href="services.html"
+               class="nav-link"
+               data-page="services">
+
+                <i class="fa-solid fa-hospital"></i>
+                <span>Hospital Services</span>
+
+            </a>
+
+
+            <a href="patient.html"
+               class="nav-link"
+               data-page="patient">
+
+                <i class="fa-solid fa-user-injured"></i>
+                <span>Patient Management</span>
+
+            </a>
+
+
+            <a href="appointments.html"
+               class="nav-link"
+               data-page="appointments">
+
+                <i class="fa-solid fa-calendar-check"></i>
+                <span>Appointments</span>
+
+            </a>
+
+
+            <a href="prescriptions.html"
+               class="nav-link"
+               data-page="prescriptions">
+
+                <i class="fa-solid fa-file-prescription"></i>
+                <span>Prescriptions</span>
+
+            </a>
+
+
+            <a href="billing.html"
+               class="nav-link active"
+               data-page="billing">
+
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <span>Billing System</span>
+
+            </a>
+
+
+            <a href="reports.html"
+               class="nav-link"
+               data-page="reports">
+
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Reports & Analytics</span>
+
+            </a>
+
+
+            <p class="nav-title">SYSTEM</p>
+
+
+            <a href="#"
+               class="nav-link"
+               data-page="users"
+               onclick="showNotification('User Management is available to System Administrators.')">
+
+                <i class="fa-solid fa-users"></i>
+                <span>User Management</span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="support-card">
+
+                <i class="fa-solid fa-headset"></i>
+
+                <div>
+
+                    <strong>Need Help?</strong>
+
+                    <small>Contact IT Support</small>
+
+                </div>
+
+            </div>
+
+
+            <button class="logout-btn"
+                    onclick="logout()">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+
+            </button>
+
+        </div>
+
+    </aside>
+
+
+
+    <main class="main-content">
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>Billing System</h1>
+
+                <p>
+                    Manage invoices, payments and outstanding balances
+                </p>
+
+            </div>
+
+
+            <div class="user-area">
+
+                <div class="notification">
+                    <i class="fa-solid fa-bell"></i>
+                </div>
+
+
+                <div class="user-info">
+
+                    <div class="user-avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <div>
+
+                        <strong id="currentUserName">
+                            User
+                        </strong>
+
+                        <span id="currentUserRole">
+                            Role
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <section class="content-section">
+
+
+            <div class="page-heading">
+
+                <div>
+
+                    <h2>
+                        Billing & Payments
+                    </h2>
+
+                    <p>
+                        Manage patient invoices and payment records.
+                    </p>
+
+                </div>
+
+
+                <button class="primary-btn"
+                        onclick="showBillingForm()">
+
+                    <i class="fa-solid fa-file-invoice"></i>
+
+                    Create Invoice
+
+                </button>
+
+            </div>
+
+
+
+            <div class="stats-grid">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon blue">
+
+                        <i class="fa-solid fa-file-invoice"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>Total Invoices</span>
+
+                        <strong id="totalInvoices">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon green">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>Paid</span>
+
+                        <strong id="paidInvoices">
+                            R0.00
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon red">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>Outstanding</span>
+
+                        <strong id="outstandingInvoices">
+                            R0.00
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div id="billingForm"
+                 class="dashboard-card"
+                 style="display:none;">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h3>
+                            Create Invoice
+                        </h3>
+
+                        <p>
+                            Enter patient billing information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form id="billingFormElement">
+
+
+                    <div class="form-row">
+
+
+                        <div class="form-group">
+
+                            <label for="billingPatient">
+                                Patient ID
+                            </label>
+
+                            <input
+                                type="text"
+                                id="billingPatient"
+                                required>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="invoiceNumber">
+                                Invoice Number
+                            </label>
+
+                            <input
+                                type="text"
+                                id="invoiceNumber"
+                                placeholder="INV-001"
+                                required>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="form-row">
+
+
+                        <div class="form-group">
+
+                            <label for="consultationFee">
+                                Consultation Fees (R)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="consultationFee"
+                                min="0"
+                                step="0.01"
+                                value="0">
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="medicationCost">
+                                Medication Costs (R)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="medicationCost"
+                                min="0"
+                                step="0.01"
+                                value="0">
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="form-row">
+
+
+                        <div class="form-group">
+
+                            <label for="medicalAid">
+                                Medical Aid
+                            </label>
+
+                            <input
+                                type="text"
+                                id="medicalAid"
+                                placeholder="Medical aid provider">
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="paymentMethod">
+                                Payment Method
+                            </label>
+
+                            <select id="paymentMethod">
+
+                                <option value="">
+                                    Select payment method
+                                </option>
+
+                                <option value="Cash">
+                                    Cash
+                                </option>
+
+                                <option value="Card">
+                                    Card
+                                </option>
+
+                                <option value="Medical Aid">
+                                    Medical Aid
+                                </option>
+
+                                <option value="EFT">
+                                    EFT
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <label for="outstandingBalance">
+                            Outstanding Balance (R)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="outstandingBalance"
+                            min="0"
+                            step="0.01"
+                            value="0">
+
+                    </div>
+
+
+
+                    <div class="form-actions">
+
+                        <button type="submit"
+                                class="primary-btn">
+
+                            <i class="fa-solid fa-floppy-disk"></i>
+
+                            Save Invoice
+
+                        </button>
+
+
+                        <button type="button"
+                                class="secondary-btn"
+                                onclick="hideBillingForm()">
+
+                            Cancel
+
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+
+
+            <div class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h3>
+                            Invoice Records
+                        </h3>
+
+                        <p>
+                            Patient billing information
+                        </p>
+
+                    </div>
+
+
+                    <div class="search-box">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                            type="text"
+                            id="billingSearch"
+                            placeholder="Search invoices...">
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Invoice No.</th>
+
+                                <th>Patient ID</th>
+
+                                <th>Consultation</th>
+
+                                <th>Medication</th>
+
+                                <th>Medical Aid</th>
+
+                                <th>Payment Method</th>
+
+                                <th>Outstanding</th>
+
+                                <th>Status</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="billingTableBody">
+
+                            <tr>
+
+                                <td colspan="8"
+                                    class="empty-state">
+
+                                    <i class="fa-solid fa-file-invoice-dollar"></i>
+
+                                    <p>
+                                        No billing records found.
+                                    </p>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<div id="notification"
+     class="notification-popup">
+
+    <i class="fa-solid fa-circle-check"></i>
+
+    <span id="notificationMessage">
+        Notification
+    </span>
+
+</div>
+
+
+<script>
+
+function showBillingForm() {
+
+    document.getElementById("billingForm").style.display = "block";
+
+}
+
+
+function hideBillingForm() {
+
+    document.getElementById("billingForm").style.display = "none";
+
+}
+
+</script>
+
+
+<script type="module"
+        src="../js/main.js"></script>
+
+</body>
+</html>

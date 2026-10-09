@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>DataCare HMS - Appointments</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="../css/style.css">
+
+</head>
+
+
+<body>
+
+<div id="application" class="application">
+
+
+    <aside class="sidebar">
+
+        <div class="sidebar-header">
+
+            <div class="logo">
+
+                <div class="logo-icon">
+                    <i class="fa-solid fa-hospital"></i>
+                </div>
+
+                <div>
+                    <strong>DataCare</strong>
+                    <span>Hospital Management</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <p class="nav-title">MAIN MENU</p>
+
+
+            <a href="../index.html"
+               class="nav-link"
+               data-page="dashboard">
+
+                <i class="fa-solid fa-house"></i>
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a href="services.html"
+               class="nav-link"
+               data-page="services">
+
+                <i class="fa-solid fa-hospital"></i>
+                <span>Hospital Services</span>
+
+            </a>
+
+
+            <a href="patient.html"
+               class="nav-link"
+               data-page="patient">
+
+                <i class="fa-solid fa-user-injured"></i>
+                <span>Patient Management</span>
+
+            </a>
+
+
+            <a href="appointments.html"
+               class="nav-link active"
+               data-page="appointments">
+
+                <i class="fa-solid fa-calendar-check"></i>
+                <span>Appointments</span>
+
+            </a>
+
+
+            <a href="prescriptions.html"
+               class="nav-link"
+               data-page="prescriptions">
+
+                <i class="fa-solid fa-file-prescription"></i>
+                <span>Prescriptions</span>
+
+            </a>
+
+
+            <a href="billing.html"
+               class="nav-link"
+               data-page="billing">
+
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <span>Billing System</span>
+
+            </a>
+
+
+            <a href="reports.html"
+               class="nav-link"
+               data-page="reports">
+
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Reports & Analytics</span>
+
+            </a>
+
+
+            <p class="nav-title">SYSTEM</p>
+
+
+            <a href="#"
+               class="nav-link"
+               data-page="users"
+               onclick="showNotification('User Management is available to System Administrators.')">
+
+                <i class="fa-solid fa-users"></i>
+                <span>User Management</span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="support-card">
+
+                <i class="fa-solid fa-headset"></i>
+
+                <div>
+
+                    <strong>Need Help?</strong>
+
+                    <small>Contact IT Support</small>
+
+                </div>
+
+            </div>
+
+
+            <button class="logout-btn"
+                    onclick="logout()">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+
+            </button>
+
+        </div>
+
+    </aside>
+
+
+
+    <main class="main-content">
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>Appointments</h1>
+
+                <p>
+                    Schedule and manage patient appointments
+                </p>
+
+            </div>
+
+
+            <div class="user-area">
+
+                <div class="notification">
+                    <i class="fa-solid fa-bell"></i>
+                </div>
+
+
+                <div class="user-info">
+
+                    <div class="user-avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <div>
+
+                        <strong id="currentUserName">
+                            User
+                        </strong>
+
+                        <span id="currentUserRole">
+                            Role
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <section class="content-section">
+
+
+            <div class="page-heading">
+
+                <div>
+
+                    <h2>
+                        Appointment Scheduling
+                    </h2>
+
+                    <p>
+                        Create and manage hospital appointments.
+                    </p>
+
+                </div>
+
+
+                <button class="primary-btn"
+                        onclick="showAppointmentForm()">
+
+                    <i class="fa-solid fa-calendar-plus"></i>
+
+                    New Appointment
+
+                </button>
+
+            </div>
+
+
+
+            <div id="appointmentForm"
+                 class="dashboard-card"
+                 style="display:none;">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h3>
+                            Schedule Appointment
+                        </h3>
+
+                        <p>
+                            Enter appointment details.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form id="appointmentFormElement">
+
+
+                    <div class="form-row">
+
+
+                        <div class="form-group">
+
+                            <label for="appointmentPatient">
+                                Patient ID / Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="appointmentPatient"
+                                required>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="appointmentDoctor">
+                                Doctor
+                            </label>
+
+                            <input
+                                type="text"
+                                id="appointmentDoctor"
+                                placeholder="Doctor name"
+                                required>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="form-row">
+
+
+                        <div class="form-group">
+
+                            <label for="appointmentDate">
+                                Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="appointmentDate"
+                                required>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="appointmentTime">
+                                Time
+                            </label>
+
+                            <input
+                                type="time"
+                                id="appointmentTime"
+                                required>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="form-row">
+
+
+                        <div class="form-group">
+
+                            <label for="appointmentType">
+                                Appointment Type
+                            </label>
+
+                            <select
+                                id="appointmentType"
+                                required>
+
+                                <option value="">
+                                    Select Type
+                                </option>
+
+                                <option value="Consultation">
+                                    Consultation
+                                </option>
+
+                                <option value="Follow-up">
+                                    Follow-up
+                                </option>
+
+                                <option value="Emergency">
+                                    Emergency
+                                </option>
+
+                                <option value="Specialist">
+                                    Specialist
+                                </option>
+
+                                <option value="Check-up">
+                                    Check-up
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="wardAllocation">
+                                Ward Allocation
+                            </label>
+
+                            <input
+                                type="text"
+                                id="wardAllocation"
+                                placeholder="e.g. Ward A">
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="form-actions">
+
+                        <button type="submit"
+                                class="primary-btn">
+
+                            <i class="fa-solid fa-calendar-check"></i>
+
+                            Save Appointment
+
+                        </button>
+
+
+                        <button type="button"
+                                class="secondary-btn"
+                                onclick="hideAppointmentForm()">
+
+                            Cancel
+
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+
+
+            <div class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h3>
+                            Appointment Records
+                        </h3>
+
+                        <p>
+                            Upcoming and previous appointments
+                        </p>
+
+                    </div>
+
+                    <div class="search-box">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                            type="text"
+                            id="appointmentSearch"
+                            placeholder="Search appointments...">
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Appointment ID</th>
+
+                                <th>Patient</th>
+
+                                <th>Doctor</th>
+
+                                <th>Date</th>
+
+                                <th>Time</th>
+
+                                <th>Type</th>
+
+                                <th>Ward</th>
+
+                                <th>Status</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="appointmentTableBody">
+
+                            <tr>
+
+                                <td colspan="8"
+                                    class="empty-state">
+
+                                    <i class="fa-solid fa-calendar-xmark"></i>
+
+                                    <p>
+                                        No appointments found.
+                                    </p>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<div id="notification"
+     class="notification-popup">
+
+    <i class="fa-solid fa-circle-check"></i>
+
+    <span id="notificationMessage">
+        Notification
+    </span>
+
+</div>
+
+
+<script>
+
+function showAppointmentForm() {
+
+    document.getElementById("appointmentForm").style.display = "block";
+
+}
+
+
+function hideAppointmentForm() {
+
+    document.getElementById("appointmentForm").style.display = "none";
+
+}
+
+</script>
+
+
+<script type="module"
+        src="../js/main.js"></script>
+
+</body>
+</html>

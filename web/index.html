@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DataCare HMS - Dashboard</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<!-- =====================================================
+     LOGIN / REGISTER
+===================================================== -->
+
+<div id="authScreen" class="auth-page">
+
+    <div class="auth-container">
+
+        <!-- LEFT SIDE -->
+        <div class="auth-image">
+
+            <div class="auth-overlay">
+
+                <div class="brand-large">
+                    <i class="fa-solid fa-hospital"></i>
+                    <span>DataCare HMS</span>
+                </div>
+
+                <h1>
+                    DataCare Hospital<br>
+                    Management System
+                </h1>
+
+                <p>
+                    A modern digital platform designed to simplify
+                    hospital management, patient care and healthcare
+                    administration.
+                </p>
+
+                <div class="auth-features">
+
+                    <div>
+                        <i class="fa-solid fa-user-injured"></i>
+                        <span>Patient Management</span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-calendar-check"></i>
+                        <span>Appointment Scheduling</span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-file-prescription"></i>
+                        <span>Prescription Management</span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        <span>Billing & Payments</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+        <div class="auth-form-area">
+
+            <div class="auth-form">
+
+                <!-- =================================================
+                     LOGIN FORM
+                ================================================== -->
+
+                <div id="loginBox">
+
+                    <div class="auth-logo">
+                        <i class="fa-solid fa-hospital"></i>
+
+                        <h2>DataCare HMS</h2>
+                    </div>
+
+                    <h2>Welcome Back</h2>
+
+                    <p class="form-subtitle">
+                        Sign in to your DataCare Hospital Management account.
+                    </p>
+
+
+                    <form id="loginForm">
+
+                        <div class="input-group">
+
+                            <label for="loginEmail">
+                                Email Address
+                            </label>
+
+                            <div class="input-icon">
+
+                                <i class="fa-solid fa-envelope"></i>
+
+                                <input
+                                    type="email"
+                                    id="loginEmail"
+                                    placeholder="Enter your email"
+                                    autocomplete="email"
+                                    required>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="loginPassword">
+                                Password
+                            </label>
+
+                            <div class="input-icon">
+
+                                <i class="fa-solid fa-lock"></i>
+
+                                <input
+                                    type="password"
+                                    id="loginPassword"
+                                    placeholder="Enter your password"
+                                    autocomplete="current-password"
+                                    required>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="btn-primary btn-full">
+
+                            <i class="fa-solid fa-right-to-bracket"></i>
+
+                            Login
+
+                        </button>
+
+                    </form>
+
+
+                    <div class="switch-text">
+
+                        Don't have an account?
+
+                        <button
+                            type="button"
+                            class="text-button"
+                            onclick="showRegister()">
+
+                            Create Account
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     REGISTER FORM
+                ================================================== -->
+
+                <div id="registerBox" style="display: none;">
+
+                    <div class="auth-logo">
+                        <i class="fa-solid fa-hospital"></i>
+
+                        <h2>DataCare HMS</h2>
+                    </div>
+
+                    <h2>Create Account</h2>
+
+                    <p class="form-subtitle">
+                        Register a new account for the DataCare Hospital
+                        Management System.
+                    </p>
+
+
+                    <form id="registerForm">
+
+                        <div class="form-grid">
+
+                            <!-- FIRST NAME -->
+                            <div class="input-group">
+
+                                <label for="registerFirstName">
+                                    First Name
+                                </label>
+
+                                <div class="input-icon">
+
+                                    <i class="fa-solid fa-user"></i>
+
+                                    <input
+                                        type="text"
+                                        id="registerFirstName"
+                                        placeholder="First name"
+                                        autocomplete="given-name"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- LAST NAME -->
+                            <div class="input-group">
+
+                                <label for="registerLastName">
+                                    Last Name
+                                </label>
+
+                                <div class="input-icon">
+
+                                    <i class="fa-solid fa-user"></i>
+
+                                    <input
+                                        type="text"
+                                        id="registerLastName"
+                                        placeholder="Last name"
+                                        autocomplete="family-name"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- EMAIL -->
+                            <div class="input-group full-width">
+
+                                <label for="registerEmail">
+                                    Email Address
+                                </label>
+
+                                <div class="input-icon">
+
+                                    <i class="fa-solid fa-envelope"></i>
+
+                                    <input
+                                        type="email"
+                                        id="registerEmail"
+                                        placeholder="Enter your email"
+                                        autocomplete="email"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- PASSWORD -->
+                            <div class="input-group full-width">
+
+                                <label for="registerPassword">
+                                    Password
+                                </label>
+
+                                <div class="input-icon">
+
+                                    <i class="fa-solid fa-lock"></i>
+
+                                    <input
+                                        type="password"
+                                        id="registerPassword"
+                                        placeholder="Create a password"
+                                        minlength="6"
+                                        autocomplete="new-password"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ROLE -->
+                            <div class="input-group full-width">
+
+                                <label for="registerRole">
+                                    User Role
+                                </label>
+
+                                <div class="input-icon">
+
+                                    <i class="fa-solid fa-user-shield"></i>
+
+                                    <select id="registerRole" required>
+
+                                        <option value="">
+                                            Select your role
+                                        </option>
+
+                                        <option value="Patient">
+                                            Patient
+                                        </option>
+
+                                        <option value="Receptionist">
+                                            Receptionist
+                                        </option>
+
+                                        <option value="Doctor">
+                                            Doctor
+                                        </option>
+
+                                        <option value="Nurse">
+                                            Nurse
+                                        </option>
+
+                                        <option value="Pharmacist">
+                                            Pharmacist
+                                        </option>
+
+                                        <option value="Billing Clerk">
+                                            Billing Clerk
+                                        </option>
+
+                                        <option value="Hospital Manager">
+                                            Hospital Manager
+                                        </option>
+
+                                        <option value="System Administrator">
+                                            System Administrator
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="btn-primary btn-full">
+
+                            <i class="fa-solid fa-user-plus"></i>
+
+                            Create Account
+
+                        </button>
+
+                    </form>
+
+
+                    <div class="switch-text">
+
+                        Already have an account?
+
+                        <button
+                            type="button"
+                            class="text-button"
+                            onclick="showLogin()">
+
+                            Login
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN APPLICATION
+===================================================== -->
+
+<div id="application" class="app" style="display: none;">
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+    <aside class="sidebar">
+
+        <!-- SIDEBAR LOGO -->
+
+        <div class="sidebar-logo">
+
+            <div class="logo-icon">
+
+                <i class="fa-solid fa-hospital"></i>
+
+            </div>
+
+            <div>
+
+                <h2>DataCare</h2>
+
+                <span>Hospital Management</span>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="sidebar-nav">
+
+            <p class="nav-title">
+                MAIN MENU
+            </p>
+
+
+            <!-- DASHBOARD -->
+
+            <a
+                href="index.html"
+                class="nav-link"
+                data-page="dashboard">
+
+                <i class="fa-solid fa-house"></i>
+
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <!-- SERVICES -->
+
+            <a
+                href="pages/services.html"
+                class="nav-link"
+                data-page="services">
+
+                <i class="fa-solid fa-hospital"></i>
+
+                <span>Hospital Services</span>
+
+            </a>
+
+
+            <!-- PATIENTS -->
+
+            <a
+                href="pages/patient.html"
+                class="nav-link"
+                data-page="patient">
+
+                <i class="fa-solid fa-user-injured"></i>
+
+                <span>Patient Management</span>
+
+            </a>
+
+
+            <!-- APPOINTMENTS -->
+
+            <a
+                href="pages/appointments.html"
+                class="nav-link"
+                data-page="appointments">
+
+                <i class="fa-solid fa-calendar-check"></i>
+
+                <span>Appointments</span>
+
+            </a>
+
+
+            <!-- PRESCRIPTIONS -->
+
+            <a
+                href="pages/prescriptions.html"
+                class="nav-link"
+                data-page="prescriptions">
+
+                <i class="fa-solid fa-file-prescription"></i>
+
+                <span>Prescriptions</span>
+
+            </a>
+
+
+            <!-- BILLING -->
+
+            <a
+                href="pages/billing.html"
+                class="nav-link"
+                data-page="billing">
+
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+
+                <span>Billing System</span>
+
+            </a>
+
+
+            <!-- REPORTS -->
+
+            <a
+                href="pages/reports.html"
+                class="nav-link"
+                data-page="reports">
+
+                <i class="fa-solid fa-chart-column"></i>
+
+                <span>Reports & Analytics</span>
+
+            </a>
+
+
+            <!-- SYSTEM -->
+
+            <p class="nav-title">
+                SYSTEM
+            </p>
+
+
+            <a
+                href="#"
+                class="nav-link"
+                data-page="users"
+                onclick="showNotification('User Management is available to System Administrators.')">
+
+                <i class="fa-solid fa-users"></i>
+
+                <span>User Management</span>
+
+            </a>
+
+        </nav>
+
+
+        <!-- SIDEBAR BOTTOM -->
+
+        <div class="sidebar-bottom">
+
+            <div class="support-card">
+
+                <i class="fa-solid fa-headset"></i>
+
+                <div>
+
+                    <strong>Need Help?</strong>
+
+                    <small>
+                        Contact IT Support
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="logout-btn"
+                onclick="logout()">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                Logout
+
+            </button>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =================================================
+         MAIN CONTENT
+    ================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+ <!-- MOBILE MENU BUTTON -->
+    <button
+        class="mobile-menu-btn"
+        id="mobileMenuBtn"
+        type="button"
+        aria-label="Open navigation menu">
+
+        <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+            <div>
+
+                <h1>
+                    Dashboard
+                </h1>
+
+                <p>
+                    Welcome to DataCare Hospital Management System
+                </p>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+
+                <!-- NOTIFICATION -->
+
+                <button
+                    class="icon-button"
+                    type="button"
+                    onclick="showNotification('No new notifications.')">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                    <span class="notification-dot"></span>
+
+                </button>
+
+
+                <!-- USER PROFILE -->
+
+                <div class="user-profile">
+
+                    <div class="profile-avatar">
+
+                        <i class="fa-solid fa-user"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong id="currentUserName">
+                            User
+                        </strong>
+
+                        <span id="currentUserRole">
+                            Role
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             DASHBOARD CONTENT
+        ================================================== -->
+
+        <div class="dashboard-content">
+
+
+            <!-- PAGE HEADING -->
+
+            <div class="page-heading">
+
+                <div>
+
+                    <h2>
+                        Hospital Management Dashboard
+                    </h2>
+
+                    <p>
+                        Overview of your DataCare HMS system.
+                    </p>
+
+                </div>
+
+
+                <div class="date-display">
+
+                    <i class="fa-regular fa-calendar"></i>
+
+                    <span id="currentDate">
+                        Today
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 STATISTICS
+            ================================================== -->
+
+            <div class="stats-grid">
+
+
+                <!-- PATIENTS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon blue">
+
+                        <i class="fa-solid fa-user-injured"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total Patients
+                        </span>
+
+                        <strong id="totalPatients">
+                            0
+                        </strong>
+
+                        <small>
+                            Registered patients
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- APPOINTMENTS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon red">
+
+                        <i class="fa-solid fa-calendar-check"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Appointments
+                        </span>
+
+                        <strong id="totalAppointments">
+                            0
+                        </strong>
+
+                        <small>
+                            Hospital appointments
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PRESCRIPTIONS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon purple">
+
+                        <i class="fa-solid fa-file-prescription"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Prescriptions
+                        </span>
+
+                        <strong id="totalPrescriptions">
+                            0
+                        </strong>
+
+                        <small>
+                            Prescriptions recorded
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BILLING -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon green">
+
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total Billing
+                        </span>
+
+                        <strong id="totalBilling">
+                            R0.00
+                        </strong>
+
+                        <small>
+                            Total billing amount
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 QUICK ACTIONS
+            ================================================== -->
+
+            <div class="section-title">
+
+                <div>
+
+                    <h2>
+                        Quick Actions
+                    </h2>
+
+                    <p>
+                        Quickly access important areas.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="quick-actions">
+
+
+                <a
+                    href="pages/patient.html"
+                    class="quick-card">
+
+                    <div class="quick-icon blue-bg">
+
+                        <i class="fa-solid fa-user-plus"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Patient Management
+                        </strong>
+
+                        <span>
+                            Add and manage patients
+                        </span>
+
+                    </div>
+
+                    <i class="fa-solid fa-chevron-right arrow"></i>
+
+                </a>
+
+
+                <a
+                    href="pages/appointments.html"
+                    class="quick-card">
+
+                    <div class="quick-icon red-bg">
+
+                        <i class="fa-solid fa-calendar-plus"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Appointments
+                        </strong>
+
+                        <span>
+                            Schedule appointments
+                        </span>
+
+                    </div>
+
+                    <i class="fa-solid fa-chevron-right arrow"></i>
+
+                </a>
+
+
+                <a
+                    href="pages/prescriptions.html"
+                    class="quick-card">
+
+                    <div class="quick-icon purple-bg">
+
+                        <i class="fa-solid fa-prescription-bottle-medical"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Prescriptions
+                        </strong>
+
+                        <span>
+                            Manage prescriptions
+                        </span>
+
+                    </div>
+
+                    <i class="fa-solid fa-chevron-right arrow"></i>
+
+                </a>
+
+
+                <a
+                    href="pages/billing.html"
+                    class="quick-card">
+
+                    <div class="quick-icon green-bg">
+
+                        <i class="fa-solid fa-money-bill-wave"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Billing System
+                        </strong>
+
+                        <span>
+                            Manage hospital billing
+                        </span>
+
+                    </div>
+
+                    <i class="fa-solid fa-chevron-right arrow"></i>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 DASHBOARD GRID
+            ================================================== -->
+
+            <div class="dashboard-grid">
+
+
+                <!-- APPOINTMENT CHART -->
+
+                <div class="content-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Appointment Overview
+                            </h3>
+
+                            <p>
+                                Hospital appointment statistics
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="chart-container">
+
+                        <canvas id="appointmentChart"></canvas>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SYSTEM INFORMATION -->
+
+                <div class="content-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                System Information
+                            </h3>
+
+                            <p>
+                                DataCare HMS
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="summary-list">
+
+
+                        <div class="summary-item">
+
+                            <div class="summary-icon blue-bg">
+
+                                <i class="fa-solid fa-shield-halved"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Security
+                                </strong>
+
+                                <span>
+                                    Account protection
+                                </span>
+
+                            </div>
+
+                            <b>
+                                Protected
+                            </b>
+
+                        </div>
+
+
+                        <div class="summary-item">
+
+                            <div class="summary-icon green-bg">
+
+                                <i class="fa-solid fa-database"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Database
+                                </strong>
+
+                                <span>
+                                    Cloud database
+                                </span>
+
+                            </div>
+
+                            <b>
+                                Firebase
+                            </b>
+
+                        </div>
+
+
+                        <div class="summary-item">
+
+                            <div class="summary-icon purple-bg">
+
+                                <i class="fa-solid fa-user-shield"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Access Control
+                                </strong>
+
+                                <span>
+                                    User permissions
+                                </span>
+
+                            </div>
+
+                            <b>
+                                Role Based
+                            </b>
+
+                        </div>
+
+
+                        <div class="summary-item">
+
+                            <div class="summary-icon blue-bg">
+
+                                <i class="fa-solid fa-cloud"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Platform
+                                </strong>
+
+                                <span>
+                                    Application platform
+                                </span>
+
+                            </div>
+
+                            <b>
+                                Cloud
+                            </b>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     GLOBAL NOTIFICATION
+===================================================== -->
+
+<div
+    id="notification"
+    class="notification">
+
+    <i class="fa-solid fa-circle-check"></i>
+
+    <span id="notificationMessage">
+        Notification
+    </span>
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script type="module" src="js/main.js"></script>
+
+</body>
+</html>
