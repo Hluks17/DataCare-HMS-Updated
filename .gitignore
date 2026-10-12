@@ -6,3 +6,5 @@ android-app/**/build/
 android-app/.gradle/
 android-app/local.properties
 .idea/
+serviceAccountKey.json
+*firebase-adminsdk*.json
