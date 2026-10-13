@@ -233,8 +233,7 @@ api.post('/prescriptions', requireRole('doctor', 'admin'), async (req, res) => {
       if (med.stock_qty < it.quantity)
         throw Object.assign(new Error(`Not enough stock for ${med.name}`), { status: 409 });
 
-        await client.query(
-            "UPDATE invoices SET payment_status='Paid' WHERE invoice_id=$1", [inv.invoice_id]);
+       
       await client.query(
         `INSERT INTO prescription_items (prescription_id, medication_id, quantity, dosage, unit_price)
          VALUES ($1,$2,$3,$4,$5)`,
@@ -333,10 +332,7 @@ api.post('/invoices/:id/pay', async (req, res) => {
       'INSERT INTO payments (invoice_id, payment_method, payment_date, amount_paid) VALUES ($1,$2,CURRENT_DATE,$3)',
       [inv.invoice_id, method, total]);
     await client.query("UPDATE invoices SET payment_status='Paid', payment_method_placeholder=NULL WHERE invoice_id=$1".replace(', payment_method_placeholder=NULL', ''), [inv.invoice_id]);
-    await client.query(
-      `INSERT INTO notifications (user_id, message)
-       SELECT user_id, 'Invoice ' || $1 || ' has been paid' FROM users WHERE role IN ('admin','billing_clerk')`,
-      [inv.invoice_number]);
+       await client.query("UPDATE invoices SET payment_status='Paid' WHERE invoice_id=$1", [inv.invoice_id]);
     await client.query('COMMIT');
     res.json({ message: 'Payment successful', invoice_number: inv.invoice_number, amount_paid: total });
   } catch (e) {
