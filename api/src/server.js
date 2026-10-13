@@ -3,13 +3,18 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const db = require('./db');
-const { requireAuth } = require('./auth');
+const { requireAuth, requireRole } = require('./auth');
 const v = require('./validators');
 
 const app = express();
 app.use(helmet(), cors(), express.json());
 
+const STAFF = ['receptionist', 'doctor', 'nurse', 'pharmacist', 'billing_clerk', 'manager', 'admin'];
+const CAN_EDIT_PATIENTS = ['receptionist', 'doctor', 'nurse', 'admin'];
+
+// ---------- Public health checks ----------
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
+
 app.get('/health/db', async (req, res) => {
   try {
     const r = await db.query('SELECT COUNT(*) FROM medications');
@@ -19,9 +24,11 @@ app.get('/health/db', async (req, res) => {
   }
 });
 
+// ---------- Everything below needs a valid login ----------
 const api = express.Router();
 api.use(requireAuth);
 
+// Creates the users row the first time someone logs in
 api.post('/auth/sync', async (req, res) => {
   const email = req.firebaseUser.email;
   const parts = (req.firebaseUser.name || email.split('@')[0]).split(' ');
@@ -37,6 +44,7 @@ api.post('/auth/sync', async (req, res) => {
   res.json(rows[0]);
 });
 
+// ---------- Profile ----------
 api.get('/users/me', (req, res) => {
   if (!req.user) return res.status(404).json({ error: 'Call /auth/sync first' });
   const { user_id, email, first_name, last_name, phone_number, role } = req.user;
@@ -55,6 +63,7 @@ api.put('/users/me', async (req, res) => {
   res.json(rows[0]);
 });
 
+// ---------- Settings ----------
 api.get('/users/me/settings', async (req, res) => {
   if (!req.user) return res.status(404).json({ error: 'Call /auth/sync first' });
   const { rows } = await db.query(
@@ -75,6 +84,57 @@ api.put('/users/me/settings', async (req, res) => {
   res.json(rows[0]);
 });
 
+// ---------- Patients ----------
+api.get('/patients', requireRole(...STAFF), async (req, res) => {
+  const q = `%${(req.query.search || '').trim()}%`;
+  const { rows } = await db.query(
+    `SELECT * FROM patients
+     WHERE first_name ILIKE $1 OR last_name ILIKE $1 OR phone_number ILIKE $1
+     ORDER BY patient_id DESC`, [q]);
+  res.json(rows);
+});
+
+api.get('/patients/:id', requireRole(...STAFF), async (req, res) => {
+  const { rows } = await db.query('SELECT * FROM patients WHERE patient_id = $1', [req.params.id]);
+  rows[0] ? res.json(rows[0]) : res.status(404).json({ error: 'Patient not found' });
+});
+
+api.post('/patients', requireRole(...CAN_EDIT_PATIENTS), async (req, res) => {
+  const errors = v.validatePatient(req.body);
+  if (errors.length) return res.status(400).json({ errors });
+  const b = req.body;
+  const { rows } = await db.query(
+    `INSERT INTO patients (first_name, last_name, gender, date_of_birth, phone_number, address, medical_aid)
+     VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
+    [b.first_name.trim(), b.last_name.trim(), b.gender, b.date_of_birth,
+     b.phone_number.trim(), b.address.trim(), b.medical_aid || null]);
+  res.status(201).json(rows[0]);
+});
+
+api.put('/patients/:id', requireRole(...CAN_EDIT_PATIENTS), async (req, res) => {
+  const errors = v.validatePatient(req.body);
+  if (errors.length) return res.status(400).json({ errors });
+  const b = req.body;
+  const { rows } = await db.query(
+    `UPDATE patients SET first_name=$1, last_name=$2, gender=$3, date_of_birth=$4,
+       phone_number=$5, address=$6, medical_aid=$7
+     WHERE patient_id=$8 RETURNING *`,
+    [b.first_name.trim(), b.last_name.trim(), b.gender, b.date_of_birth,
+     b.phone_number.trim(), b.address.trim(), b.medical_aid || null, req.params.id]);
+  rows[0] ? res.json(rows[0]) : res.status(404).json({ error: 'Patient not found' });
+});
+
+api.delete('/patients/:id', requireRole('admin'), async (req, res) => {
+  try {
+    const r = await db.query('DELETE FROM patients WHERE patient_id = $1', [req.params.id]);
+    r.rowCount ? res.status(204).end() : res.status(404).json({ error: 'Patient not found' });
+  } catch (e) {
+    if (e.code === '23503') return res.status(409).json({ error: 'Patient has records and cannot be deleted' });
+    throw e;
+  }
+});
+
+// ---------- Mount, error handler, start ----------
 app.use('/api', api);
 
 app.use((err, req, res, next) => {
