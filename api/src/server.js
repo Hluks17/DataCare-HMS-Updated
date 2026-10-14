@@ -217,14 +217,14 @@ api.post('/prescriptions', requireRole('doctor', 'admin'), async (req, res) => {
       [inv.invoice_id]);
 
     // Consultation line: the price comes from the database, never from the app
-       const svc = await client.query(
+    const svc = await client.query(
       `INSERT INTO invoice_items (invoice_id, description, quantity, unit_price)
        SELECT $1, name, 1, price FROM services WHERE service_id = $2
        RETURNING invoice_item_id`,
       [inv.invoice_id, service_id]);
     if (svc.rowCount === 0) throw Object.assign(new Error('Unknown service'), { status: 400 });
 
-    // Each medication: price looked up on the server
+    // Each medication: price looked up on the server, stock checked and reduced
     for (const it of items) {
       const med = (await client.query(
         'SELECT name, strength, unit_price, stock_qty FROM medications WHERE medication_id = $1',
@@ -233,7 +233,6 @@ api.post('/prescriptions', requireRole('doctor', 'admin'), async (req, res) => {
       if (med.stock_qty < it.quantity)
         throw Object.assign(new Error(`Not enough stock for ${med.name}`), { status: 409 });
 
-       
       await client.query(
         `INSERT INTO prescription_items (prescription_id, medication_id, quantity, dosage, unit_price)
          VALUES ($1,$2,$3,$4,$5)`,
@@ -241,6 +240,9 @@ api.post('/prescriptions', requireRole('doctor', 'admin'), async (req, res) => {
       await client.query(
         'INSERT INTO invoice_items (invoice_id, description, quantity, unit_price) VALUES ($1,$2,$3,$4)',
         [inv.invoice_id, `${med.name} ${med.strength || ''}`.trim(), it.quantity, med.unit_price]);
+      await client.query(
+        'UPDATE medications SET stock_qty = stock_qty - $1 WHERE medication_id = $2',
+        [it.quantity, it.medication_id]);
     }
 
     // Tell the patient (if they have a login) and the admin / billing staff
@@ -331,8 +333,14 @@ api.post('/invoices/:id/pay', async (req, res) => {
     await client.query(
       'INSERT INTO payments (invoice_id, payment_method, payment_date, amount_paid) VALUES ($1,$2,CURRENT_DATE,$3)',
       [inv.invoice_id, method, total]);
-    await client.query("UPDATE invoices SET payment_status='Paid', payment_method_placeholder=NULL WHERE invoice_id=$1".replace(', payment_method_placeholder=NULL', ''), [inv.invoice_id]);
-       await client.query("UPDATE invoices SET payment_status='Paid' WHERE invoice_id=$1", [inv.invoice_id]);
+    await client.query("UPDATE invoices SET payment_status='Paid' WHERE invoice_id=$1", [inv.invoice_id]);
+
+    // Tell admin / billing staff that the invoice was paid
+    await client.query(
+      `INSERT INTO notifications (user_id, message)
+       SELECT user_id, 'Invoice ' || $1::text || ' has been paid' FROM users WHERE role IN ('admin','billing_clerk')`,
+      [inv.invoice_number]);
+
     await client.query('COMMIT');
     res.json({ message: 'Payment successful', invoice_number: inv.invoice_number, amount_paid: total });
   } catch (e) {
